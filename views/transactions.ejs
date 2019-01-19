@@ -1,0 +1,150 @@
+<% include header.ejs%>
+
+<% if(transactionData.isGet == true) { %>
+<div class="alert alert-success" role="alert">
+ Current Balance = <%= transactionData.balance%>  <br>
+</div>
+<% } %>
+<% if(transactionData.recipientName) { %>
+<div class="alert alert-success" role="alert">
+ Recipient Name = <%= transactionData.recipientName%>  <br>
+</div>
+<% } %>
+
+
+
+
+<% if(transactionData.strategy === 'AUTO') { %>
+<h2>Transaction form</h2>
+<form method="post" name="transaction-form" action="/transactions">
+  <div class="form-group">
+    <label for="text">Enter recipient:</label>
+    <input type="text" class="form-control" name="recipient" <% if(transactionData.recipientKey){%>value="<%=transactionData.recipientKey%>"<br>
+<%}%>
+  </div>
+  <div class="form-group">
+    <label for="ammount">Enter ammount:</label>
+    <input type="number" class="form-control" name="ammount">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+<% } %>
+
+<% if(transactionData.strategy === 'RECOVERABLE') { %>
+<h2>Transaction form</h2>
+<form method="post" name="transaction-form" action="/transactions">
+  <div class="form-group">
+    <label for="text">Enter recipient:</label>
+    <input type="text" class="form-control" name="recipient" <% if(transactionData.recipientKey) { %>
+value="<%= transactionData.recipientKey%>"  <br>
+<% } %>
+  </div>
+  <div class="form-group">
+    <label for="ammount">Enter ammount:</label>
+    <input type="number" class="form-control" name="ammount">
+  </div>
+  <div class="form-group">
+    <label for="password">Enter pass-phrase:</label>
+    <input type="password" class="form-control" name="userKey" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+<% } %>
+
+<% if(transactionData.strategy === 'NONRECOVERABLE') { %>
+<h2>Transaction form</h2>
+<form method="post" name="transaction-form" action="/transactions">
+  <div class="form-group">
+    <label for="text">Enter recipient:</label>
+    <input type="text" class="form-control" name="recipient" <% if(transactionData.recipientKey) { %>
+value="<%= transactionData.recipientKey%>"  <br>
+<% } %>
+  </div>
+  <div class="form-group">
+    <label for="ammount">Enter ammount:</label>
+    <input type="number" class="form-control" name="ammount">
+  </div>
+  <div class="form-group">
+    <label for="password">Enter pass-phrase:</label>
+    <input type="password" class="form-control" name="userKey" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+<% } %>
+
+<% if(transactionData.strategy === 'DONTSAVE') { %>
+<h2>Transaction form</h2>
+<form method="post" name="transaction-form" action="/transactions">
+  <div class="form-group">
+    <label for="text">Enter recipient:</label>
+    <input type="text" class="form-control" name="recipient" <% if(transactionData.recipientKey) { %>
+value="<%= transactionData.recipientKey%>"  <br>
+<% } %>
+  </div>
+  <div class="form-group">
+    <label for="ammount">Enter ammount:</label>
+    <input type="number" class="form-control" name="ammount">
+  </div>
+  <div class="form-group">
+    <label for="password">Enter privateKey:</label>
+    <input type="password" class="form-control" name="privateKey" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+<% } %>
+
+
+
+<% if(transactionData.success == true) { %>
+<div class="alert alert-success" role="alert">
+  Transaction launched successfully! <br>
+  Transaction id = <%= transactionData.Tid%>  <br>
+  Recipient = <%= transactionData.recipient%>  <br>
+  Ammount = <%= transactionData.ammount%>  <br>
+  Remaining Balance = <%= transactionData.balance%>  <br>
+  Status = <%= transactionData.status%>
+</div>
+<div class="alert alert-success" role="alert">
+  <a href="/mine-now" class="alert-link">Mine Now!</a>.
+</div>
+<% } %>
+
+<% if(transactionData.failed == false) { %>
+<div class="alert alert-success" role="alert">
+  Transaction successful!
+</div>
+<div class="alert alert-success" role="alert">
+  Transaction completed successfully! <br>
+  Transaction id = <%= transactionData.Tid%>  <br>
+  Recipient = <%= transactionData.recipient%>  <br>
+  Ammount = <%= transactionData.ammount%>  <br>
+  Remaining Balance = <%= transactionData.balance%>  <br>
+  Status = <%= transactionData.status%>
+</div>
+<% } %>
+
+<% if(transactionData.failed == true) { %>
+<div class="alert alert-danger" role="alert">
+  Transaction is not successful!
+</div>
+<div class="alert alert-danger" role="alert">
+  Transaction failed! <br>
+    <% if(transactionData.errors.invalid == true) { %>
+    <div class="alert alert-danger" role="alert">
+      Transaction is invalid!
+    </div>
+    <% } %>
+    <% if(transactionData.errors.sign == true) { %>
+    <div class="alert alert-danger" role="alert">
+      Signature is invalid! Your pass-phrase or privatekey is incorrect! 
+    </div>
+    <% } %>
+  Status = <%= transactionData.status%>
+</div>
+<% } %>
+
+
+
+
+
+<% include footer.ejs%>

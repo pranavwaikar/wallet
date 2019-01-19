@@ -1,0 +1,26 @@
+<% include header.ejs%>
+
+
+<h2> Login form </h2>
+<% if(errors.success == false) { %>
+<div class="alert alert-danger" role="alert">
+  Email & password does not match!
+</div>
+<% } %>
+<form method="post" name="login-form" action="/login">
+  <div class="form-group">
+    <label for="email">Enter email-id:</label>
+    <input type="email" class="form-control" name="email">
+  </div>
+  <div class="form-group">
+    <label for="password">Enter Password:</label>
+    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+
+  <button type="submit"  id="submit-login" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+
+<% include footer.ejs%>

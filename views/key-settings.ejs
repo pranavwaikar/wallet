@@ -1,0 +1,68 @@
+<% include header.ejs%>
+
+<h4>Select a policy option:</h4>
+
+<% if(Data.strategy === 'AUTO') { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="/make-auto" class="btn btn-secondary btn-lg btn-block active" role="button" aria-pressed="true" >
+	Walletio will manage your keys & fill-in automatically. (Default) <br>
+	Walletio saves your private-key in encrypted format & fill them in automatically. </a>
+</div>
+<% } else { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="/make-auto" class="btn btn-primary btn-lg btn-block active" role="button" aria-pressed="true" >
+	Walletio will manage your keys & fill-in automatically. (Default) <br>
+	Walletio saves your private-key in encrypted format & fill them in automatically. </a>
+</div>
+<% } %>
+
+<% if(Data.strategy === 'RECOVERABLE') { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="/make-recoverable" class="btn btn-secondary btn-lg btn-block active" role="button" aria-pressed="true">
+	Encrypt private-key with your own custom pass-phrase with recovery.(Recommended) <br>
+	your private-key will be encrypted with your own pass-phrase.you need to put pass-phrase while transacting.<br>
+	you can recover pass-phrase if you forgot. </a>
+</div>
+<% } else { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="/make-recoverable" class="btn btn-primary btn-lg btn-block active" role="button" aria-pressed="true">
+	Encrypt private-key with your own custom pass-phrase with recovery.(Recommended) <br>
+	your private-key will be encrypted with your own pass-phrase.you need to put pass-phrase while transacting.<br>
+	you can recover pass-phrase if you forgot. </a>
+</div>
+<% } %>
+
+<% if(Data.strategy === 'NONRECOVERABLE') { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="/make-nonrecoverable" class="btn btn-secondary btn-lg btn-block active" role="button" aria-pressed="true">
+	Encrypt private-key with your own custom pass-phrase without recovery. <br>
+	your private-key will be encrypted with your own pass-phrase.you need to put pass-phrase while transacting.<br>
+	 you can not recover pass-phrase if you forgot. </a>
+</div>
+<% } else { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="/make-nonrecoverable" class="btn btn-primary btn-lg btn-block active" role="button" aria-pressed="true">
+	Encrypt private-key with your own custom pass-phrase without recovery. <br>
+	your private-key will be encrypted with your own pass-phrase.you need to put pass-phrase while transacting.<br>
+	 you can not recover pass-phrase if you forgot. </a>
+</div>
+<% } %>
+
+<% if(Data.strategy === 'dontsave') { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="make-dontsave" class="btn btn-secondary btn-lg btn-block active" role="button" aria-pressed="true">
+	Dont save my keys (Not recommended).  <br>
+	Walletio will not save your private-key. Your private-key will be shown to you only once.<br>
+	If private-key is lost, then it can never be recovered. You are responsible for your key. </a>
+</div>
+<% } else { %>
+<div style="margin-block-end: 2em; margin-block-start: 2em;">
+	<a href="make-dontsave" class="btn btn-primary btn-lg btn-block active" role="button" aria-pressed="true">
+	Dont save my keys (Not recommended).  <br>
+	Walletio will not save your private-key. Your private-key will be shown to you only once.<br>
+	If private-key is lost, then it can never be recovered. You are responsible for your key. </a>
+</div>
+<% } %>
+
+
+<% include footer.ejs%>

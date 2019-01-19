@@ -1,0 +1,53 @@
+<% include header.ejs%>
+
+<h2>Profile form</h2>
+<% if(profileData.errorEmail == true) { %>
+<div class="alert alert-danger" role="alert">
+  Email is not valid!
+</div>
+<% } %>
+<% if(profileData.errorPhone == true) { %>
+<div class="alert alert-danger" role="alert">
+  Phone number is not valid!
+</div>
+<% } %>
+
+<% if(profileData.success == true) { %>
+	<form method="post" name="profile-form" action="/profile-update">
+  <div class="form-group">
+    <label for="email"> Email:</label>
+    <input type="email" class="form-control" name="email" value="<%= profileData.email%>">
+  </div>
+  <div class="form-group">
+    <label for="number">Phone Number:</label>
+    <input type="text" class="form-control" name="phnumber" value="<%= profileData.phnumber%>">
+  </div>
+
+  <fieldset disabled="disabled">
+  <div class="form-group">
+    <label for="balance">Balance:</label>
+    <input type="text" class="form-control" name="balance" value="<%= profileBalanceData.balance%>" >
+  </div>
+  <div class="form-group">
+    <label for="pubkey">Public Key:</label>
+    <input type="text" class="form-control" name="pubkey" value=" <%=profileData.publicKey%>">
+  </div>
+  <div class="form-group">
+    <label for="prvkey">Encrypted Private Key:</label>
+    <input type="text" class="form-control" name="prvkey" value=" <%=profileData.privateKey%>">
+  </div>
+  </fieldset>
+  <button type="submit" id="submit-signup" class="btn btn-primary">Submit</button>
+</form>
+<% } else {%>
+
+	<div class="alert alert-danger" role="alert">
+	  Failed to fetch the profile data
+	</div>
+
+<% } %>
+
+
+	
+
+<% include footer.ejs%>

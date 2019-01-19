@@ -1,0 +1,39 @@
+<% include header.ejs%>
+
+<% if(transactionData.success == true) { %>
+
+  <h2>Pending Credit Transactions</h2>
+	<div>
+    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tid</th>
+      <th scope="col">Date& time</th>
+      <th scope="col">Sender</th>
+      <th scope="col">Ammount</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i=0; i<transactionData.data.length; i++) { %>
+      <tr>
+        <th scope="row"><%= i %></th>
+        <td><%=transactionData.data[i].Tid %></td>
+        <td><%=transactionData.data[i].time %></td>
+        <td><%=transactionData.data[i].sender %></td>
+        <td><%=transactionData.data[i].ammount %></td>
+        <td><%=transactionData.data[i].status %></td>
+      </tr>
+  <%  } %>
+  </tbody>
+</table>
+	</div>
+</div>
+
+<%} else { %>
+<div class="alert alert-danger" role="alert">
+  failed to fetch transactions
+
+<% }%>
+<% include footer.ejs%>

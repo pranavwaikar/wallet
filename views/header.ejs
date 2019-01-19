@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title style="font-family:garamond">Walletio</title>
+</head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/assets/stylesheets/bootstrap.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/assets/stylesheets/styles.css">
+<link href="/assets/stylesheets/heroic-features.css" rel="stylesheet">
+</meta>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Walletio</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+			<% if(isAuthenticated == true) {%>
+
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/profile" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profile
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/profile">Show Profile Details</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/change-password">Change Password</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/key-settings">Change Key management policy</a>
+        </div>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="/transactions">Transact </a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Credits
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/completed-credit-transactions">Completed Transactions</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/pending-credit-transactions">Pending Transactions</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/transactions" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Debits
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/completed-transactions">Completed Transactions</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/pending-transactions">Pending Transactions</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Tools
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/address-book">Address-book</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/recover-passphrase">Recover Pass-phrase</a>
+        </div>
+      </li>
+			<% }%>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About us</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+			<% if(isAuthenticated) {%>
+				<a class="nav-link" href="/logout" >Logout</a>
+
+			<% } else {%>
+				<a class="nav-link" href="/login" >Login</a>
+	      <a class="nav-link" href="/register" >Register</a>
+			<% } %>
+    </form>
+  </div>
+</nav>
+
+<style type="text/css">
+  .dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  margin-right: .1rem;
+}
+</style>
+
+<script type="text/javascript">
+  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+  if (!$(this).next().hasClass('show')) {
+    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+  }
+  var $subMenu = $(this).next(".dropdown-menu");
+  $subMenu.toggleClass('show');
+
+
+  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+    $('.dropdown-submenu .show').removeClass("show");
+  });
+
+
+  return false;
+});
+</script>

@@ -1,0 +1,103 @@
+<% include header.ejs%>
+
+<% if(Data.success == true) { %>
+<div class="alert alert-success" role="alert">
+  Key policy is updated! <br>
+  Walletio will manage your keys & fill-in automatically, no passphrase will be required!
+</div>
+<% } else { %>
+<% if(Data.success == false) { %>
+<div class="alert alert-danger" role="alert">
+  Something is not right!
+</div>
+<% } %>
+<% if(Data.password == false) { %>
+<div class="alert alert-danger" role="alert">
+  Password does not match! Invalid password! <br>
+  Try Again!
+</div>
+<% } %>
+<% if(Data.passphrase == false) { %>
+<div class="alert alert-danger" role="alert">
+   Invalid passphrase !
+</div>
+<% } %>
+
+<% if(Data.strategy === 'AUTO') { %>
+
+<div class="alert alert-danger" role="alert">
+  You are about to update your key policy!<br>
+   Please enter password to confirm!
+</div>
+<form method="post" name="Auto form" action="/make-auto">
+  <div class="form-group">
+    <label for="text">Enter password:</label>
+    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+
+<% } %>
+
+<% if(Data.strategy === 'RECOVERABLE') { %>
+
+<div class="alert alert-danger" role="alert">
+  You are about to update your key policy!<br>
+  Walletio will manage your keys & fill-in automatically, no passphrase will be required!<br>
+   Please enter password to confirm!
+</div>
+<form method="post" name="Auto form" action="/make-auto">
+  <div class="form-group">
+    <label for="text">Enter password:</label>
+    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+
+<% } %>
+
+<% if(Data.strategy === 'NONRECOVERABLE') { %>
+
+<div class="alert alert-danger" role="alert">
+  You are about to update your key policy!<br>
+  Walletio will manage your keys & fill-in automatically, no passphrase will be required!<br>
+   Please enter password to confirm!
+</div>
+<form method="post" name="Auto form" action="/make-auto">
+  <div class="form-group">
+    <label for="text">Enter password:</label>
+    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <div class="form-group">
+    <label for="text">Enter pass-phrase:</label>
+    <input type="password" class="form-control" name="userKey" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+
+<% } %>
+
+
+<% if(Data.strategy === 'DONTSAVE') { %>
+
+<div class="alert alert-danger" role="alert">
+  You are about to update your key policy!<br>
+  Walletio will manage your keys & fill-in automatically, no passphrase will be required!<br>
+   Please enter password to confirm!
+</div>
+<form method="post" name="Auto form" action="/make-auto">
+  <div class="form-group">
+    <label for="text">Enter password:</label>
+    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <div class="form-group">
+    <label for="text">Enter privatekey:</label>
+    <input type="password" class="form-control" name="privateKey" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <button type="submit"  id="submit-transaction" class="btn btn-primary">Submit</button>
+</form>
+
+<% } %>
+
+<% } %>
+<% include footer.ejs%>

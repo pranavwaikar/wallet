@@ -1,0 +1,101 @@
+<% include header.ejs%>
+
+<h4>Add address</h4>
+<% if(addressData.success == true) { %>
+<div class="alert alert-success" role="alert">
+  Entry saved in address book !
+</div>
+<% } %>
+<% if(addressData.editSuccess == true) { %>
+<div class="alert alert-success" role="alert">
+  Updated Entry saved in address book !
+</div>
+<% } %>
+<% if(addressData.removal == true) { %>
+<div class="alert alert-success" role="alert">
+  Entry removed successfully from Address-book !
+</div>
+<% } %>
+
+<% if(addressData.success == false) { %>
+<div class="alert alert-danger" role="alert">
+  something is not right !
+</div>
+<% } %>
+
+<% if(addressData.names == false) { %>
+<div class="alert alert-danger" role="alert">
+  Name is invalid!
+</div>
+<% } %>
+
+<% if(addressData.key == false) { %>
+<div class="alert alert-danger" role="alert">
+  public-key is invalid !
+</div>
+<% } %>
+
+
+<% if(addressData.edit == true) { %>
+	<form method="post" name="test-form" action="/address-book-update">
+	  <div class="form-group">
+	    <label for="data">Enter Name:</label>
+	    <input type="text" class="form-control" name="name" value="<%= addressData.editName%>" >
+	  </div>
+	  <input type="hidden" id="oldname" name="oldname" value="<%= addressData.editName%>">
+	  <div class="form-group">
+	    <label for="data">Enter public-key:</label>
+	    <input type="text" class="form-control" name="publicKey" value="<%= addressData.editKey %>">
+	  </div>
+	  <input type="hidden" id="oldkey" name="oldkey" value="<%= addressData.editKey%>">
+	  <button type="submit"  id="submit-login" class="btn btn-primary">Update to Address-book</button>
+	</form>
+<% } else { %>
+
+
+<form method="post" name="test-form" action="/address-book">
+  <div class="form-group">
+    <label for="data">Enter Name:</label>
+    <input type="text" class="form-control" name="name">
+  </div>
+  <div class="form-group">
+    <label for="data">Enter public-key:</label>
+    <input type="text" class="form-control" name="publicKey">
+  </div>
+  <button type="submit"  id="submit-login" class="btn btn-primary">Add to Address-book</button>
+</form>
+
+<% } %>
+  <h2>Address Book </h2>
+	<div>
+    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">PublicKey</th>
+      <th scope="col">Make Transaction</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i=0; i<addressData.data.length; i++) { %>
+      <tr>
+        <th scope="row"><%= i %></th>
+        <td><%=addressData.data[i].name %></td>
+        <td><%=addressData.data[i].publicKey %></td>
+        <td><a href="/transactions?name=<%=addressData.data[i].name%>&key=<%=addressData.data[i].publicKey%>" 
+        class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Transact Now</a></td>
+        <td><a href="/address-bookops?act=edit&name=<%=addressData.data[i].name%>&key=<%=addressData.data[i].publicKey%>" 
+        class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Edit</a></td>
+        <td><a href="/address-bookops?act=remove&name=<%=addressData.data[i].name%>&key=<%=addressData.data[i].publicKey%>" 
+        class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Delete</a></td>
+      </tr>
+  <%  } %>
+  </tbody>
+	</table>
+	</div>
+	</div>
+
+<% include footer.ejs%>

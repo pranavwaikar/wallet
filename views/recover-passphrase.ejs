@@ -1,0 +1,53 @@
+<% include header.ejs%>
+
+<% if(recoveryData.success == true) { %>
+<div class="alert alert-success" role="alert">
+  Passphrase recovered successfully!
+</div>
+<% } %>
+<% if(recoveryData.password == true) { %>
+<div class="alert alert-danger" role="alert">
+  Something is not right!
+</div>
+<% } %>
+<% if(recoveryData.password == true) { %>
+<div class="alert alert-danger" role="alert">
+  Password does not match! Invalid password !
+</div>
+<% } %>
+<% if(recoveryData.passphrase == true) { %>
+<div class="alert alert-danger" role="alert">
+   Invalid passphrase !
+</div>
+<% } %>
+
+
+<% if(recoveryData.strategy === 'RECOVERABLE') { %>
+	<form method="post" name="passphrase-recovery-form" action="/recover-passphrase">
+	  <div class="form-group">
+	    <label for="text">Enter password:</label>
+	    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+	  </div>
+	  <div class="form-group">
+	    <label for="text">Enter new pass-phrase:</label>
+	    <input type="password" class="form-control" name="userKey" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+	  </div>
+	  <button type="submit"  id="submit-login" class="btn btn-primary">Submit</button>
+	</form>
+<% } else if(recoveryData.strategy === 'AUTO') { %>
+
+	<div class="alert alert-info" role="alert">
+	  Walletio manages your keys for you. you dont need a pass-phrase at all.<br>
+	  If you want to change then 
+	  <a href="/make-recoverable" class="alert-link">Click Here</a>. to change your policy.
+	</div>
+
+<% } else { %>
+	<div class="alert alert-info" role="alert">
+  	Your current key management policy does not include pass-phrase recovery.<br>
+  	<a href="/make-recoverable" class="alert-link">Click Here</a>. to change your policy.
+	</div>
+<% } %>
+
+
+<% include footer.ejs%>

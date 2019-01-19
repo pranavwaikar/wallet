@@ -1,0 +1,74 @@
+<% include header.ejs%>
+
+
+<h2> Registration form</h2>
+<% if(errors.success == true) { %>
+<div class="alert alert-success" role="alert">
+  User registration is successful! 
+  <a href="/login" class="alert-link">Click Here</a>. to Log-in!
+</div>
+<% } %>
+<% if(errors.success == false) { %>
+<div class="alert alert-danger" role="alert">
+  Something is not right!
+</div>
+<% } %>
+<% if(errors.email == true) { %>
+<div class="alert alert-danger" role="alert">
+  Email is not valid!
+</div>
+<% } %>
+<% if(errors.password == true) { %>
+<div class="alert alert-danger" role="alert">
+  Password is not valid!
+</div>
+<% } %>
+<% if(errors.names == true) { %>
+<div class="alert alert-danger" role="alert">
+  Name is not valid!
+</div>
+<% } %>
+<% if(errors.phone == true) { %>
+<div class="alert alert-danger" role="alert">
+  Phone number is not valid!
+</div>
+<% } %>
+<% if(errors.password2 == true) { %>
+<div class="alert alert-danger" role="alert">
+  Confirm password does not match!
+</div>
+<% } %>
+<% if(errors.exists == true) { %>
+<div class="alert alert-danger" role="alert">
+  User already exists!
+</div>
+<% } %>
+
+<form method="post" name="signup-form" action="/register">
+  <div class="form-group">
+    <label for="name">Enter Name:</label>
+    <input type="text" class="form-control" name="name">
+  </div>
+  <div class="form-group">
+    <label for="email">Enter email-id:</label>
+    <input type="email" class="form-control" name="email">
+  </div>
+  <div class="form-group">
+    <label for="number">Enter phone Number:</label>
+    <input type="number" class="form-control" name="phnumber">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Enter Password:</label>
+    <input type="password" class="form-control" name="pwd" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Confirm Password:</label>
+    <input type="password" class="form-control" name="pwd2" onmouseover ="this.type='text'" onmouseout ="this.type='password'">
+  </div>
+
+  <button type="submit" id="submit-signup" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+<% include footer.ejs%>

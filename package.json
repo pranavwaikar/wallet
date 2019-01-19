@@ -1,0 +1,32 @@
+{
+  "name": "walletio",
+  "version": "1.0.0",
+  "description": "walletion - A blockchain wallet",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js"
+  },
+  "author": "pkw",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "connect-mongodb-session": "^2.0.6",
+    "ejs": "^2.6.1",
+    "email-validator": "^2.0.4",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "http": "0.0.0",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.4.1",
+    "passport": "^0.4.0",
+    "passport-custom": "^1.0.5",
+    "password-validator": "^4.1.1",
+    "request": "^2.88.0",
+    "secure-random": "^1.1.1"
+  }
+}
