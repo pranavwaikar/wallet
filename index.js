@@ -41,7 +41,7 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    maxAge: 1000 * 60 * 60 * 24 * 7 // cookie age: 1 week
   }
   //cookie: { secure: true }
 }));
@@ -68,8 +68,9 @@ app.get('/about', function(req,res) {
   res.render('about',{});
 });
 
-//login related routines
+//__________________________________LOGIN RELATED ROUTINES________________________________________
 
+//use passport js for password validation.
 passport.use(new CustomStrategy(
   function(req, done) {
     userModel.find({email:req.body.email},function(err,data){
@@ -95,12 +96,15 @@ passport.use(new CustomStrategy(
   }
 )}));
 
+
+//simple login page rendering
 app.get('/login', function(req,res) {
   console.log(req.user);
   console.log(req.isAuthenticated());
   res.render('login',{errors:loginErrors});
 });
 
+//when user enters login data, it is parsed here
 app.post('/login',urlencodedParser,passport.authenticate('custom',
 { failureRedirect: '/login' }),
   function(req, res) {
@@ -108,14 +112,15 @@ app.post('/login',urlencodedParser,passport.authenticate('custom',
   }
 );
 
-//logout related
+//____________________________________LOGOUT RELATED ROUTINES _____________________________________
+//it simply removes session & user gets logged out
 app.get('/logout',function(req,res) {
   req.logout();
   req.session.destroy();
   res.redirect('/');
 });
 
-//signup related
+//_______________________________________SIGN-UP RELATED ROUTINES____________________________________
 app.get('/register', function(req,res) {
   var error = new Object();
   res.render('register',{errors:error});
@@ -129,7 +134,11 @@ app.post('/register',urlencodedParser,function(req,res){
   });
 });
 
-//profile related
+//____________________________________________PROFILE RELATED ROUTINES ____________________________________
+
+//simple rendering of profile page
+//fetches user details from database & balance from cryptocurrency
+//display all details to user
 app.get('/profile',authenticationMiddleware(), function(req,res) {
   getProfile(req.user,function(err,profile){
   if(err)
@@ -145,6 +154,8 @@ app.get('/profile',authenticationMiddleware(), function(req,res) {
   });
 });
 
+//user can change email or mobile number here
+//upon updating again show the profile page with updated value
 app.post('/profile-update',urlencodedParser,authenticationMiddleware(),function(req,res){
   updateProfile(req.user,req.body.email,req.body.phnumber,function(err,profile){
     if(err)
@@ -160,11 +171,14 @@ app.post('/profile-update',urlencodedParser,authenticationMiddleware(),function(
   });
 });
 
+//simple password change form rendering
 app.get('/change-password',authenticationMiddleware(), function(req,res) {
   var error= new Object();
     res.render('change-password',{errors:error});
 });
 
+//Accepts old & new password , validates & updates password.
+//Notifies success or failure of coperation
 app.post('/change-password',urlencodedParser,authenticationMiddleware(),function(req,res){
   changePassword(req.user,req.body.pwd,req.body.pwd1,req.body.pwd2,function(err,result){
     if(err)
@@ -174,7 +188,10 @@ app.post('/change-password',urlencodedParser,authenticationMiddleware(),function
   });
 });
 
-//key management
+//_________________________________________KEY MANAGEMENT RELATED ROUTINES______________________________________
+
+//Render the key management policy page
+//here page highlights the current startegy 
 app.get('/key-settings',authenticationMiddleware(), function(req,res) {
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data){
     var obj = new Object();
@@ -183,6 +200,8 @@ app.get('/key-settings',authenticationMiddleware(), function(req,res) {
   });
 });
 
+//User lands here when he selects automatic strategy
+//we find his current strategy & show the form accordingly
 app.get('/make-auto',authenticationMiddleware(), function(req,res) {  
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data){
     var obj = new Object();
@@ -191,6 +210,9 @@ app.get('/make-auto',authenticationMiddleware(), function(req,res) {
   });
 });
 
+//When user enters data in auto strategy form , it is parsed here
+//according to the current strategy , the input changes.
+//we take input necessary,validate input, manipulate DB, show success/failure for operation
 app.post('/make-auto',urlencodedParser,authenticationMiddleware(), function(req,res) {  
   if (typeof req.body.userKey !== 'undefined' && req.body.userKey !== null) {
    if(!PASSPHRASE_SCHEMA.validate(req.body.userKey)) {
@@ -234,6 +256,8 @@ app.post('/make-auto',urlencodedParser,authenticationMiddleware(), function(req,
   });
 });
 
+//User lands here when he selects recoverable strategy
+//we find his current strategy & show the form accordingly
 app.get('/make-recoverable',authenticationMiddleware(), function(req,res) {  
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data){
     var obj = new Object();
@@ -242,6 +266,9 @@ app.get('/make-recoverable',authenticationMiddleware(), function(req,res) {
   });
 });
 
+//When user enters data in recoverable strategy form , it is parsed here
+//according to the current strategy , the input changes. we validate
+//we take input necessary,validate input, manipulate DB, show success/failure for operation
 app.post('/make-recoverable',urlencodedParser,authenticationMiddleware(), function(req,res) {  
     if (typeof req.body.userKey !== 'undefined' && req.body.userKey !== null) {
    if(!PASSPHRASE_SCHEMA.validate(req.body.userKey)) {
@@ -285,6 +312,9 @@ app.post('/make-recoverable',urlencodedParser,authenticationMiddleware(), functi
   });
 });
 
+
+//User lands here when he selects recoverable strategy
+//we find his current strategy & show the form accordingly
 app.get('/make-nonrecoverable',authenticationMiddleware(), function(req,res) {  
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data){
     var obj = new Object();
@@ -293,6 +323,10 @@ app.get('/make-nonrecoverable',authenticationMiddleware(), function(req,res) {
   });
 });
 
+
+//When user enters data in nonrecoverable strategy form , it is parsed here
+//according to the current strategy , the input changes.
+//we take input necessary,validate input, manipulate DB, show success/failure for operation
 app.post('/make-nonrecoverable',urlencodedParser,authenticationMiddleware(), function(req,res) {  
     if (typeof req.body.userKey !== 'undefined' && req.body.userKey !== null) {
      if(!PASSPHRASE_SCHEMA.validate(req.body.userKey)) {
@@ -336,6 +370,10 @@ app.post('/make-nonrecoverable',urlencodedParser,authenticationMiddleware(), fun
   });
 });
 
+
+
+//User lands here when he selects recoverable strategy
+//we find his current strategy & show the form accordingly
 app.get('/make-dontsave',authenticationMiddleware(), function(req,res) {  
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data){
     var obj = new Object();
@@ -344,6 +382,11 @@ app.get('/make-dontsave',authenticationMiddleware(), function(req,res) {
   });
 });
 
+
+
+//When user enters data in dont save strategy form , it is parsed here
+//according to the current strategy , the input changes.
+//we take input necessary,validate input, manipulate DB, redirect user to key-download page
 app.post('/make-dontsave',urlencodedParser,authenticationMiddleware(), function(req,res) {
     if (typeof req.body.userKey !== 'undefined' && req.body.userKey !== null) {
      if(!PASSPHRASE_SCHEMA.validate(req.body.userKey)) {
@@ -387,6 +430,9 @@ app.post('/make-dontsave',urlencodedParser,authenticationMiddleware(), function(
   });
 });
 
+//When dont save strategy is selected. This page shows key for last time & 
+//user can download his key from here in privateKey.txt file 
+keys 
 app.post('/download-key',urlencodedParser, function(req,res) {
   var key = req.body.privateKey;
   console.log('key--',key);
@@ -395,7 +441,9 @@ app.post('/download-key',urlencodedParser, function(req,res) {
   res.send(key);
 });
 
-//transactions
+//_________________________________TRANSACTION HISTORY & STATUS RELATED ROUTINES_________________________________
+
+//requests debit completed transactions & shows in table format
 app.get('/completed-transactions',authenticationMiddleware(), function(req,res) {
   getCompletedTransactions(req.user,function(err,result){
     if(err)
@@ -407,6 +455,7 @@ app.get('/completed-transactions',authenticationMiddleware(), function(req,res) 
   });
 });
 
+//requests debit pending transactions & shows in table format
 app.get('/pending-transactions',authenticationMiddleware(), function(req,res) {
   getPendingTransactions(req.user,function(err,result){
     if(err)
@@ -418,6 +467,7 @@ app.get('/pending-transactions',authenticationMiddleware(), function(req,res) {
   });
 });
 
+//requests credit completed transactions & shows in table format
 app.get('/completed-credit-transactions',authenticationMiddleware(), function(req,res) {
   getCompletedCreditTransactions(req.user,function(err,result){
     if(err)
@@ -430,6 +480,7 @@ app.get('/completed-credit-transactions',authenticationMiddleware(), function(re
   });
 });
 
+//requests pending transactions & shows in table format
 app.get('/pending-credit-transactions',authenticationMiddleware(), function(req,res) {
   getPendingCreditTransactions(req.user,function(err,result){
     if(err)
@@ -442,7 +493,8 @@ app.get('/pending-credit-transactions',authenticationMiddleware(), function(req,
   });
 });
 
-
+//shows transact form according to KMS strategy
+//shows current balance 
 app.get('/transactions',authenticationMiddleware(), function(req,res) {
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data) {
   if(err) throw err;
@@ -462,7 +514,9 @@ app.get('/transactions',authenticationMiddleware(), function(req,res) {
   });   
 });
 
-
+//here we take  transaction input & forward it to crypto currency
+//it sends the transaction reciept as response
+//display it to the user.
 app.post('/transactions',urlencodedParser,authenticationMiddleware(), function(req,res) {
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,userProfile) {
   if(err) throw err;
@@ -530,6 +584,8 @@ app.post('/transactions',urlencodedParser,authenticationMiddleware(), function(r
   });
 });
 
+//this is handle for mine -now button
+//displays reciept for transaction to user.
 app.get('/mine-now',authenticationMiddleware(), function(req,res) {
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,data) {
 
@@ -560,7 +616,13 @@ app.get('/mine-now',authenticationMiddleware(), function(req,res) {
 });
 
 
-//tools
+//____________________________________________TOOLS RELATED ROUTINES________________________________________
+
+
+//        __________________________RECOVER PASSPHRASE RELATED ROUTINES_________________
+
+//If user has opted for recoverable then show input form
+//if not then show the error & link to change strategy
 app.get('/recover-passphrase', function(req,res) {
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,userProfile) {
   if(err) throw err;
@@ -570,6 +632,9 @@ app.get('/recover-passphrase', function(req,res) {
   });
 });
 
+//accept password & new passphrase 
+//verify & vallidate bot fields
+//Manipulte DB & show success/failure
 app.post('/recover-passphrase',urlencodedParser,authenticationMiddleware(), function(req,res) {
 
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,userProfile){
@@ -613,6 +678,11 @@ app.post('/recover-passphrase',urlencodedParser,authenticationMiddleware(), func
    
 });
 
+
+//      _____________________________________ADDRESS BOOK RELATED ROUTINES_________________
+
+//default landing page , show form for entry addition
+// shows all previous entries
 app.get('/address-book', function(req,res) {
   userModel.findOne({"_id":new ObjectId(req.user)},function(err,userProfile) {
   if(err) throw err;
@@ -622,6 +692,10 @@ app.get('/address-book', function(req,res) {
   });
 });
 
+// prepoulate the fields according to URL structure
+//if action is edit then prepoulate selected entry fields in form for editing
+//if action is remove then delete the entry from DB
+//show success/failure for operation
 app.get('/address-bookops', function(req,res) {
   if (req.query) {
     if (req.query.act === 'edit') {
@@ -654,6 +728,10 @@ app.get('/address-bookops', function(req,res) {
 });
 
 
+//add new entry in address book
+//validate fields of input
+// add entry in DB
+//show suceess/failure
 app.post('/address-book',urlencodedParser, function(req,res) {
   var isNameOk  = NAME_SCHEMA.validate(req.body.name);
   var isKeyOk   = PASSPHRASE_SCHEMA.validate(req.body.publicKey);
@@ -686,6 +764,9 @@ app.post('/address-book',urlencodedParser, function(req,res) {
   }
 });
 
+
+//while editing, validate the fields
+//add updated entry first & then delete the old entry
 app.post('/address-book-update',urlencodedParser, function(req,res) {
   var isNameOk  = NAME_SCHEMA.validate(req.body.name);
   var isKeyOk   = PASSPHRASE_SCHEMA.validate(req.body.publicKey);
@@ -726,7 +807,7 @@ app.post('/address-book-update',urlencodedParser, function(req,res) {
   }
 });
 
-
+//____________________________________________MOCK ENDPOINT_______________________________________________
 app.get('/test', function(req,res) {
   console.log(req.query);
   if (req.query.act === 'edit') {
@@ -756,7 +837,7 @@ app.listen(3000,function(){
 });
 
 
-//service routines
+//_________________________________________________SERVICE ROUTINES___________________________________________
 passport.serializeUser(function(user_id, done) {
   done(null, user_id);
 });

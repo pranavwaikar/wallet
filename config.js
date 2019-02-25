@@ -1,14 +1,18 @@
+//This is main config file for e-wallet
+
 var passwordValidator = require('password-validator');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
-const HOST = 'localhost';
+//for cryptocurrency location
+const HOST = 'localhost';   
 const PORT = 3001;
-const DB_URL  = 'mongodb://cmnshareteb:cmnshareteb1@ds161062.mlab.com:61062/walletio';
-const ALGORITHM = 'aes-128-cbc';
 
+const DB_URL  = 'mongodb://cmnshareteb:cmnshareteb1@ds161062.mlab.com:61062/walletio'; //for MongoDB 
+const ALGORITHM = 'aes-128-cbc';    //for encryption and decryption of private keys
 
+//schema for profile password
 const PWD_SCHEMA = new passwordValidator();
 PWD_SCHEMA
 .is().min(8)                                    // Minimum length 8
@@ -19,6 +23,7 @@ PWD_SCHEMA
 .has().not().spaces()                           // Should not have spaces
 .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
 
+//schema for mobile number
 const PHNUMBER_SCHEMA = new passwordValidator();
 PHNUMBER_SCHEMA
 .is().min(10)
@@ -29,6 +34,7 @@ PHNUMBER_SCHEMA
 .has().not().uppercase()
 .has().not().spaces();
 
+//schema for name
 const NAME_SCHEMA = new passwordValidator();
 NAME_SCHEMA
 .is().min(3)
@@ -36,6 +42,7 @@ NAME_SCHEMA
 .has().not().symbols()
 .has().not().digits();
 
+//schema for pass phrase
 const PASSPHRASE_SCHEMA = new passwordValidator();
 PASSPHRASE_SCHEMA
 .is().min(8)

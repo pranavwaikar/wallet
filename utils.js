@@ -1,3 +1,4 @@
+//This file contains common utility functions which can be used directly in app 
 var http = require('http');
 var request = require('request');
 const secureRandom = require('secure-random');
@@ -6,6 +7,7 @@ const {HOST,PORT,ALGORITHM} = require('./config');
 
 class utils
 {
+	//Used to make GET request to any API
 	static GETjson(path,cb)
 	{
 		var options = {
@@ -30,6 +32,7 @@ class utils
 		.end();
 	}
 
+	//makes POST request to any API where request body is JSON
 	static POSTjson(path,senddata,cb)
 	{
 		var options={
@@ -58,35 +61,7 @@ class utils
 		req.end();
 	}
 
-	static POSTjson2(path,senddata,cb)
-	{
-		var options={
-			host: HOST,
-			port: PORT,
-			path:path,
-			method: 'POST',
-			headers :{
-				'Content-Type': 'application/json'
-			}
-		};
-		var req = http.request(options,function(res){
-			var body='';
-			res.on('data',function(chunk){
-				body +=chunk;
-				var result = body;
-				cb(null,result);
-			});
-		});
-		
-		req.on('error',function(e){
-			console.log('Error while POST request',e.message);
-		});
-		
-		req.write(JSON.stringify(senddata));
-		req.end();
-	}
-
-
+	//encrypts the given data with given key & returns cypher text
 	static encryptData(data,key)
 	{
 		var cipher = crypto.createCipher(ALGORITHM,key);
@@ -94,6 +69,7 @@ class utils
 	return encrypted;
 	}
 
+	//decrypts the given cypher text with given key & returns plain text
 	static decryptData(encyptedMsg,key)
 	{
 		var decipher = crypto.createDecipher(ALGORITHM,key);
@@ -101,6 +77,7 @@ class utils
 	return decrypted;
 	}
 
+	//generates random 32bit hex string
 	static generateKey()
 	{
 	return secureRandom.randomBuffer(32).toString('hex');
