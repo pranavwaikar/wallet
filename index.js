@@ -432,7 +432,7 @@ app.post('/make-dontsave',urlencodedParser,authenticationMiddleware(), function(
 
 //When dont save strategy is selected. This page shows key for last time & 
 //user can download his key from here in privateKey.txt file 
-keys 
+//keys 
 app.post('/download-key',urlencodedParser, function(req,res) {
   var key = req.body.privateKey;
   console.log('key--',key);
